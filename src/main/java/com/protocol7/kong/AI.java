@@ -1,49 +1,79 @@
 package com.protocol7.kong;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 public class AI {
 
-  public Command move(final GameState gameState) {
+  public Command doSomething(final GameState gameState) {
     // go to closest song
     final BfsPathFinder pathFinder = new BfsPathFinder();
 
     final Board board = gameState.getBoard();
     final Tile monkey = board.findUnique(TileType.MONKEY);
 
-    System.out.println(gameState.getInventory() + " --- " + gameState.getInventorySize());
-    System.out.println(gameState.getInventory().size() < gameState.getInventorySize());
+    if (gameState.getInventory().contains("banana")) {
+      System.out.println("Using banana");
+      return Command.use("banana");
+    }
+
+    // use speedy right away
+    int turns;
+    System.out.println("Speedy: " + gameState.getSpeedy());
+    if (gameState.getSpeedy() > 0) {
+      turns = 2;
+    } else {
+      turns = 1;
+    }
+
+    final Optional<List<Direction>> optDirections = nextMoves(gameState, pathFinder, board, monkey);
+
+    final List<Direction> directions = optDirections.or(Collections.<Direction>emptyList())
+        .stream()
+        .limit(turns)
+        .collect(Collectors.toList());
+
+    if (!directions.isEmpty()) {
+      return Command.move(directions);
+    } else {
+      return Command.idle();
+    }
+  }
+
+  private Optional<List<Direction>> nextMoves(final GameState gameState,
+                           final BfsPathFinder pathFinder,
+                           final Board board,
+                           final Tile monkey) {
     if (gameState.getInventory().size() < gameState.getInventorySize()) {
       System.out.println("Go fetch more collectibles");
-      final Optional<Direction> direction = findClosestCollectible(board, monkey, pathFinder);
-
-      return Command.moveOrIdle(direction);
+      return findClosestCollectible(board, monkey, pathFinder);
     } else {
       System.out.println("Full, go to user");
       // inventory full, go to user
       final Collection<Tile> users = board.getByType(TileType.USER);
       final Graph<Tile> graph = board.toGraph(monkey, Board.NON_WALKABLE_USER);
-      final Optional<Direction> direction = findClosest(graph, monkey, pathFinder, users);
-
-      return Command.moveOrIdle(direction);
+      return findClosest(graph, monkey, pathFinder, users);
     }
   }
 
-  private Optional<Direction> findClosestCollectible(final Board board,
+  private Optional<List<Direction>> findClosestCollectible(final Board board,
                                                      final Tile monkey,
                                                      final BfsPathFinder pathFinder) {
     final List<Tile> collectibles = Lists.newArrayList();
     collectibles.addAll(board.getByType(TileType.SONG));
     collectibles.addAll(board.getByType(TileType.ALBUM));
     collectibles.addAll(board.getByType(TileType.PLAYLIST));
+    collectibles.addAll(board.getByType(TileType.BANANA));
 
     return findClosest(board.toGraph(monkey, Board.NON_WALKABLE_COLLECTIBLES), monkey, pathFinder, collectibles);
   }
 
-  private Optional<Direction> findClosest(final Graph<Tile> graph,
+  private Optional<List<Direction>> findClosest(final Graph<Tile> graph,
                                            final Tile monkey,
                                            final BfsPathFinder pathFinder,
                                            final Collection<Tile> targets) {
@@ -51,7 +81,7 @@ public class AI {
 
     if (paths.isPresent()) {
       final Path shortest = paths.get().getShortest();
-      return Optional.of(shortest.getFirstDirection());
+      return Optional.of(shortest.getDirections());
     } else {
       return Optional.absent();
     }

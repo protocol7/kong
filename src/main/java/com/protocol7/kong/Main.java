@@ -38,7 +38,7 @@ public class Main {
     // You identify yourselves by your team name, your API key, and the current game ID
     final String teamName = args[0];
     final String apiKey = args[1];
-    final String gameId = "165";
+    final String gameId = "128";
 
     // We've put the AI-code in a separate class
     final AI ai = new AI();
@@ -59,7 +59,7 @@ public class Main {
       System.out.println("Remaining turns: " + currentGameState.getInt("remainingTurns"));
 
       // Use your AI to decide in which direction to move
-      final Command nextCommand = ai.move(GameState.fromJson(currentGameState));
+      final Command nextCommand = ai.doSomething(GameState.fromJson(currentGameState));
       final Map<String, Object> cmd = nextCommand.toMap();
       // Don't forget to include your credentials!
       cmd.put("team", teamName);

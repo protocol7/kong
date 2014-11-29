@@ -6,4 +6,9 @@ public enum Direction {
   DOWN,
   LEFT,
   RIGHT;
+
+  @Override
+  public String toString() {
+    return name().toLowerCase();
+  }
 }
