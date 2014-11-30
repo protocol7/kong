@@ -1,6 +1,7 @@
 package com.protocol7.kong;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -93,7 +94,7 @@ public class AStarPathFinder implements PathFinder {
   }
 
   private Set<AStarTile> getAdjacencies(final Board board, final Tile tile) {
-    final List<Tile> adjacencies = board.getAdjacencies(tile);
+    final Collection<Tile> adjacencies = board.getAdjacencies(tile).values();
     final Set<AStarTile> astarAjd = new HashSet<AStarTile>();
     for (final Tile ajd : adjacencies) {
       astarAjd.add(new AStarTile(ajd));

@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Set;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 public class Board {
@@ -67,35 +69,35 @@ public class Board {
     }
   }
 
-  public List<Tile> getAdjacencies(final Tile tile) {
-    final List<Tile> adj = Lists.newArrayList();
+  public EnumMap<Direction, Tile> getAdjacencies(final Tile tile) {
+    final EnumMap<Direction, Tile> adj = Maps.newEnumMap(Direction.class);
 
     {
       final int x = tile.getPos().getX() - 1;
       final int y = tile.getPos().getY();
       if (inBoard(x, y)) {
-        adj.add(getTile(x, y));
+        adj.put(Direction.LEFT, getTile(x, y));
       }
     }
     {
       final int x = tile.getPos().getX() + 1;
       final int y = tile.getPos().getY();
       if (inBoard(x, y)) {
-        adj.add(getTile(x, y));
+        adj.put(Direction.RIGHT, getTile(x, y));
       }
     }
     {
       final int x = tile.getPos().getX();
       final int y = tile.getPos().getY() - 1;
       if (inBoard(x, y)) {
-        adj.add(getTile(x, y));
+        adj.put(Direction.UP, getTile(x, y));
       }
     }
     {
       final int x = tile.getPos().getX();
       final int y = tile.getPos().getY() + 1;
       if (inBoard(x, y)) {
-        adj.add(getTile(x, y));
+        adj.put(Direction.DOWN, getTile(x, y));
       }
     }
 
@@ -117,7 +119,7 @@ public class Board {
     while (!tiles.isEmpty()) {
       final Tile next = tiles.remove();
 
-      final List<Tile> adjacents = getAdjacencies(next);
+      final Collection<Tile> adjacents = getAdjacencies(next).values();
 
       for (final Tile adjacent : adjacents) {
         if (!added.contains(adjacent) && !nonWalkables.contains(adjacent.getType())) {

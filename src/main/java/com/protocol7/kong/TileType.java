@@ -65,4 +65,9 @@ public enum TileType {
   public boolean isFree() {
     return this == EMPTY || this == SONG;
   }
+
+  @Override
+  public String toString() {
+    return word;
+  }
 }
