@@ -10,7 +10,7 @@ public class BfsPathFinder {
 
   public Path findPath(final Graph<Tile> graph, final Tile start, final Tile end) {
     final BreadthFirstSearch<Tile> bfs = new BreadthFirstSearch<>();
-    return new Path(bfs.search(graph, start, end));
+    return Path.fromNullable(bfs.search(graph, start, end));
   }
 
 

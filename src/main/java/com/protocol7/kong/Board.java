@@ -18,10 +18,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
+import static com.protocol7.kong.TileType.*;
+
 public class Board {
 
-  public static final Set<TileType> NON_WALKABLE_COLLECTIBLES = ImmutableSet.of(TileType.WALL, TileType.OTHER_MONKEY, TileType.USER);
-  public static final Set<TileType> NON_WALKABLE_USER = ImmutableSet.of(TileType.WALL, TileType.OTHER_MONKEY);
+  public static final Set<TileType> NON_WALKABLE_COLLECTIBLES = ImmutableSet.of(WALL, CLOSED_DOOR, OTHER_MONKEY, USER);
+  public static final Set<TileType> NON_WALKABLE_OTHER = ImmutableSet.of(WALL, CLOSED_DOOR, USER);
+  public static final Set<TileType> NON_WALKABLE_USER = ImmutableSet.of(WALL, CLOSED_DOOR, OTHER_MONKEY);
 
 
   private final List<List<Tile>> board;

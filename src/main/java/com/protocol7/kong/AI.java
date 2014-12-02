@@ -50,7 +50,17 @@ public class AI {
     if (!directions.isEmpty()) {
       return Command.move(directions);
     } else {
-      return Command.idle();
+      System.out.println("No path, try go to other monkey");
+      // we can't find a collectible, assume the other monkey is blocking our path, go towards it
+      final Tile other = board.findUnique(TileType.OTHER_MONKEY);
+      final Path toOther = pathFinder.findPath(board.toGraph(monkey, Board.NON_WALKABLE_OTHER), monkey, other);
+      System.out.println(other);
+      System.out.println(toOther);
+      if (toOther != null) {
+        return Command.move(toOther.getDirections());
+      } else {
+        return Command.idle();
+      }
     }
   }
 

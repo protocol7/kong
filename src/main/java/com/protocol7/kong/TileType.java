@@ -13,7 +13,10 @@ public enum TileType {
   ALBUM('a', "album"),
   PLAYLIST('p', "playlist"),
   BANANA('b', "banana"),
-  TRAP('d', "trap");
+  TRAP('*', "trap"),
+  OPEN_DOOR('d', "open-door"),
+  CLOSED_DOOR('c', "closed-door"),
+  LEVER('l', "lever");
 
   private static final Map<Character, TileType> CHARS = new HashMap<Character, TileType>();
   private static final Map<String, TileType> WORDS = new HashMap<String, TileType>();
