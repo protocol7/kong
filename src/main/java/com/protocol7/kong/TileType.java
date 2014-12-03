@@ -16,7 +16,16 @@ public enum TileType {
   TRAP('*', "trap"),
   OPEN_DOOR('d', "open-door"),
   CLOSED_DOOR('c', "closed-door"),
-  LEVER('l', "lever");
+  LEVER('l', "lever"),
+  TUNNEL1('1', "tunnel-1"), // YOLO
+  TUNNEL2('2', "tunnel-2"),
+  TUNNEL3('3', "tunnel-3"),
+  TUNNEL4('4', "tunnel-4"),
+  TUNNEL5('5', "tunnel-5"),
+  TUNNEL6('6', "tunnel-6"),
+  TUNNEL7('7', "tunnel-7"),
+  TUNNEL8('8', "tunnel-8"),
+  TUNNEL9('9', "tunnel-9");
 
   private static final Map<Character, TileType> CHARS = new HashMap<Character, TileType>();
   private static final Map<String, TileType> WORDS = new HashMap<String, TileType>();
@@ -67,6 +76,10 @@ public enum TileType {
 
   public boolean isFree() {
     return this == EMPTY || this == SONG;
+  }
+
+  public boolean isTunnel() {
+    return word.startsWith("tunnel-");
   }
 
   @Override

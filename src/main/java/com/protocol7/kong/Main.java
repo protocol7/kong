@@ -38,7 +38,7 @@ public class Main {
     // You identify yourselves by your team name, your API key, and the current game ID
     final String teamName = args[0];
     final String apiKey = args[1];
-    final String gameId = "565";
+    final String gameId = "400";
 
     // We've put the AI-code in a separate class
     final AI ai = new AI();

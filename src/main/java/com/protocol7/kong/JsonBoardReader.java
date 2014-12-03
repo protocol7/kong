@@ -1,5 +1,7 @@
 package com.protocol7.kong;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,18 @@ import org.json.JSONObject;
 public class JsonBoardReader {
 
   public Board read(final JSONObject json) {
+    final FileWriter fw;
+    try {
+      final int i = json.getInt("remainingTurns");
+      fw = new FileWriter("tunnels-" + i + ".json");
+      fw.write(json.toString(2));
+      fw.close();
+    } catch (final IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+
     final JSONArray position = json.getJSONArray("position");
     final Pos pos = new Pos(position.getInt(1), position.getInt(0));
     final JSONArray layout = json.getJSONArray("layout");

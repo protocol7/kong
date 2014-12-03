@@ -50,7 +50,7 @@ public class Path {
         } else if (dx == 0 && dy == 1) {
           out.add(Direction.DOWN);
         } else {
-          throw new IllegalStateException("Something wack!");
+          // going through a tunnel
         }
       }
 

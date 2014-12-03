@@ -64,7 +64,7 @@ public class Board {
   }
 
   public Collection<Tile> getByType(final TileType type) {
-    final Collection<Tile> result = byType.get(type);
+    final Collection<Tile> result = Lists.newArrayList(byType.get(type));
     if (result != null) {
       return result;
     } else {
@@ -131,7 +131,23 @@ public class Board {
           added.add(adjacent);
         }
       }
+
+      if (next.getType().isTunnel()) {
+        final Collection<Tile> ends = getByType(next.getType());
+        ends.remove(next);
+        if (!ends.isEmpty()) {
+          final Tile otherEnd = ends.iterator().next();
+          if (!added.contains(otherEnd)) {
+            //System.out.println("Is a tunnel from " + next + " to " + otherEnd);
+            tiles.add(otherEnd);
+            graph.addEdge(next, otherEnd);
+            added.add(otherEnd);
+          }
+        }
+      }
     }
+
+    System.out.println(graph);
     return graph;
   }
 
